@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAHAY.AI – Crisis Response Dashboard</title>
+
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <div class="dashboard-container">
+
+    <!-- ================= HEADER ================= -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="fas fa-hand-holding-heart"></i>
+          </div>
+          <div class="logo-text">
+            <h1 class="logo-title">SAHAY.AI</h1>
+            <p class="logo-subtitle">Crisis Response Intelligence</p>
+          </div>
+        </div>
+
+        <div class="header-actions">
+          <a href="/static/departments.html" class="nav-btn">
+            <i class="fas fa-building"></i> Departments
+          </a>
+
+          <div class="header-stats">
+            <div class="stat-box">
+              <div class="stat-value" id="total-cases">0</div>
+              <div class="stat-label">Active Cases</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value" id="high-priority">0</div>
+              <div class="stat-label">High Priority</div>
+            </div>
+            <div class="stat-box">
+              <div class="stat-value">
+                <i class="fas fa-sync-alt spin" id="refresh-icon"></i>
+              </div>
+              <div class="stat-label">Live Updates</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="header-tagline">
+        <p><i class="fas fa-bullhorn"></i> Human-in-the-loop decision support for emergency response</p>
+      </div>
+    </header>
+
+    <!-- ================= GROQ CHAT ================= -->
+    <div class="groq-chat chat-normal">
+
+      <div class="chat-header">
+        <div>
+          <i class="fas fa-robot"></i> Crisis Assistant
+        </div>
+        <div class="chat-controls">
+          <i class="fas fa-minus" title="Minimize" onclick="minimizeChat()"></i>
+          <i class="fas fa-expand" title="Maximize" onclick="maximizeChat()"></i>
+          <i class="fas fa-times" title="Close" onclick="closeChat()"></i>
+        </div>
+      </div>
+
+      <div class="chat-messages" id="chat-messages"></div>
+
+      <div class="chat-input">
+        <input
+          type="text"
+          id="chat-question"
+          placeholder="Ask about disasters, departments, equipment..."
+          onkeydown="if(event.key==='Enter') sendGroqQuestion()"
+        />
+        <button onclick="sendGroqQuestion()">
+          <i class="fas fa-paper-plane"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Floating Chat Icon -->
+    <div class="chat-fab" id="chat-fab" onclick="openChat()">
+      <i class="fas fa-robot"></i>
+    </div>
+
+    <!-- ================= MAIN CONTENT ================= -->
+    <main class="dashboard-main">
+
+      <div class="dashboard-sidebar">
+
+        <div class="sidebar-section">
+          <h3><i class="fas fa-filter"></i> Filter Cases</h3>
+          <div class="filter-options">
+            <button class="filter-btn active" data-filter="all">All Cases</button>
+            <button class="filter-btn" data-filter="high">
+              <span class="priority-indicator high"></span> High
+            </button>
+            <button class="filter-btn" data-filter="medium">
+              <span class="priority-indicator medium"></span> Medium
+            </button>
+            <button class="filter-btn" data-filter="low">
+              <span class="priority-indicator low"></span> Low
+            </button>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3><i class="fas fa-chart-line"></i> Urgency Distribution</h3>
+          <div class="urgency-chart">
+            <div class="chart-bar high" id="chart-high">0%</div>
+            <div class="chart-bar medium" id="chart-medium">0%</div>
+            <div class="chart-bar low" id="chart-low">0%</div>
+          </div>
+        </div>
+
+        <div class="sidebar-section">
+          <h3><i class="fas fa-info-circle"></i> System Status</h3>
+          <div class="status-indicator">
+            <div class="status active"><span class="status-dot"></span> AI Processing</div>
+            <div class="status active"><span class="status-dot"></span> SMS Gateway</div>
+            <div class="status active"><span class="status-dot"></span> Live Updates</div>
+          </div>
+          <p class="last-update">
+            Last updated: <span id="last-update-time">--:--:--</span>
+          </p>
+        </div>
+
+      </div>
+
+      <div class="dashboard-content">
+        <div class="content-header">
+          <h2><i class="fas fa-list-alt"></i> Active Crisis Cases</h2>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Search cases...">
+          </div>
+        </div>
+
+        <div id="cases-container" class="cases-grid">
+          <div class="loading-container">
+            <div class="loading-spinner"></div>
+            <p>Loading crisis cases...</p>
+          </div>
+        </div>
+
+        <div class="empty-state" id="empty-state">
+          <i class="fas fa-inbox"></i>
+          <h3>No active crisis cases</h3>
+          <p>All cases have been resolved or no new cases reported.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="dashboard-footer">
+      <p>
+        <i class="fas fa-mobile-alt"></i> SMS Gateway Active |
+        <i class="fas fa-brain"></i> AI Processing |
+        <i class="fas fa-user-check"></i> Human-in-the-loop
+      </p>
+      <p class="footer-note">
+        SAHAY.AI – Transparent, explainable crisis decision support for low-resource emergency settings
+      </p>
+    </footer>
+
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

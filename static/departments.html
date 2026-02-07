@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAHAY.AI – Emergency Departments</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/departments.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="dashboard-container">
+    <!-- Header Section -->
+    <header class="dashboard-header">
+      <div class="header-content">
+        <div class="logo-container">
+          <div class="logo-icon">
+            <i class="fas fa-hand-holding-heart"></i>
+          </div>
+          <div class="logo-text">
+            <h1 class="logo-title">SAHAY.AI</h1>
+            <p class="logo-subtitle">Emergency Response Coordination</p>
+          </div>
+        </div>
+        <div class="header-actions">
+          <a href="/static/index.html" class="nav-btn">
+            <i class="fas fa-home"></i> Dashboard
+          </a>
+          <a href="/static/departments.html" class="nav-btn active">
+            <i class="fas fa-building"></i> Departments
+          </a>
+          <div class="header-stats">
+            <div class="stat-box">
+              <div class="stat-value" id="total-depts">24</div>
+              <div class="stat-label">Departments</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="header-tagline">
+        <p><i class="fas fa-phone-alt"></i> Emergency Contacts & Resource Coordination Network</p>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+      <div class="dashboard-sidebar">
+        <div class="sidebar-section">
+          <h3><i class="fas fa-filter"></i> Filter by Type</h3>
+          <div class="filter-options">
+            <button class="filter-btn active" data-filter="all">All Departments</button>
+            <button class="filter-btn" data-filter="government">
+              <i class="fas fa-landmark"></i> Government
+            </button>
+            <button class="filter-btn" data-filter="medical">
+              <i class="fas fa-hospital"></i> Medical
+            </button>
+            <button class="filter-btn" data-filter="rescue">
+              <i class="fas fa-truck"></i> Rescue & Fire
+            </button>
+            <button class="filter-btn" data-filter="ngo">
+              <i class="fas fa-hands-helping"></i> NGOs
+            </button>
+            <button class="filter-btn" data-filter="support">
+              <i class="fas fa-users"></i> Support Services
+            </button>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3><i class="fas fa-chart-pie"></i> Department Types</h3>
+          <div class="type-distribution">
+            <div class="type-item">
+              <span class="type-label">Government</span>
+              <span class="type-count">8</span>
+            </div>
+            <div class="type-item">
+              <span class="type-label">Medical</span>
+              <span class="type-count">6</span>
+            </div>
+            <div class="type-item">
+              <span class="type-label">Rescue</span>
+              <span class="type-count">4</span>
+            </div>
+            <div class="type-item">
+              <span class="type-label">NGOs</span>
+              <span class="type-count">5</span>
+            </div>
+            <div class="type-item">
+              <span class="type-label">Support</span>
+              <span class="type-count">3</span>
+            </div>
+          </div>
+        </div>
+        
+        <div class="sidebar-section">
+          <h3><i class="fas fa-info-circle"></i> Quick Actions</h3>
+          <div class="quick-actions">
+            <button class="action-btn call-btn">
+              <i class="fas fa-phone"></i> Emergency Call (112)
+            </button>
+            <button class="action-btn sms-btn">
+              <i class="fas fa-sms"></i> Send Emergency SMS
+            </button>
+            <button class="action-btn alert-btn">
+              <i class="fas fa-bullhorn"></i> Broadcast Alert
+            </button>
+          </div>
+          <p class="last-update">Last updated: <span id="last-update-time">Today, 14:30</span></p>
+        </div>
+      </div>
+
+      <div class="dashboard-content">
+        <div class="content-header">
+          <div>
+            <h2><i class="fas fa-network-wired"></i> Emergency Response Departments</h2>
+            <p class="subtitle">Coordinated network for disaster management & crisis response</p>
+          </div>
+          <div class="search-box">
+            <i class="fas fa-search"></i>
+            <input type="text" id="search-input" placeholder="Search departments...">
+          </div>
+        </div>
+        
+        <!-- Department Categories -->
+        <div class="categories-container">
+          <div class="category-card" data-category="government">
+            <div class="category-icon">
+              <i class="fas fa-landmark"></i>
+            </div>
+            <h3>Government Agencies</h3>
+            <p>8 departments</p>
+          </div>
+          <div class="category-card" data-category="medical">
+            <div class="category-icon">
+              <i class="fas fa-hospital"></i>
+            </div>
+            <h3>Medical Services</h3>
+            <p>6 departments</p>
+          </div>
+          <div class="category-card" data-category="rescue">
+            <div class="category-icon">
+              <i class="fas fa-fire-extinguisher"></i>
+            </div>
+            <h3>Rescue & Fire</h3>
+            <p>4 departments</p>
+          </div>
+          <div class="category-card" data-category="ngo">
+            <div class="category-icon">
+              <i class="fas fa-hands-helping"></i>
+            </div>
+            <h3>NGOs & Volunteers</h3>
+            <p>5 departments</p>
+          </div>
+        </div>
+        
+        <!-- Departments Grid -->
+        <div class="departments-grid" id="departments-container">
+          <!-- Departments will be loaded here -->
+        </div>
+        
+        <div class="empty-state" id="empty-state">
+          <i class="fas fa-building"></i>
+          <h3>No departments found</h3>
+          <p>Try adjusting your search or filter criteria.</p>
+        </div>
+      </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="dashboard-footer">
+      <p><i class="fas fa-phone-volume"></i> 24/7 Emergency Hotline: 112 | <i class="fas fa-first-aid"></i> Medical Emergency: 108 | <i class="fas fa-fire"></i> Fire Service: 101</p>
+      <p class="footer-note">SAHAY.AI - Coordinated emergency response network for efficient disaster management</p>
+    </footer>
+  </div>
+
+  <!-- Call Modal -->
+  <div class="modal" id="callModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3><i class="fas fa-phone"></i> Emergency Call</h3>
+        <button class="modal-close">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div class="call-info">
+          <div class="call-icon">
+            <i class="fas fa-phone-alt"></i>
+          </div>
+          <div>
+            <h4>Dialing: <span id="modal-dept-name"></span></h4>
+            <p class="modal-number" id="modal-dept-number"></p>
+            <p class="modal-status">Connecting to emergency services...</p>
+          </div>
+        </div>
+        <div class="call-actions">
+          <button class="call-btn-dial">
+            <i class="fas fa-phone"></i> Dial Now
+          </button>
+          <button class="call-btn-cancel">
+            Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/departments.js"></script>
+</body>
+</html>
